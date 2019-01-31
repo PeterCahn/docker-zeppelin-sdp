@@ -22,7 +22,7 @@ RUN yum install -y java-1.8.0-openjdk-devel && java -version
 
 ### Installing Zeppelin
 ARG DIST_MIRROR=http://archive.apache.org/dist/zeppelin 
-ARG VERSION=0.7.3
+ARG VERSION=0.8.1
 
 ENV ZEPPELIN_HOME=/opt/zeppelin
 
