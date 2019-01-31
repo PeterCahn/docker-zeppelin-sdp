@@ -3,13 +3,18 @@ FROM centos/systemd
 
 MAINTAINER Pietro Cannalire
 
+RUN yum swap -y -- remove fakesystemd -- install systemd systemd-libs && yum clean all
 
-### Adding files for systemd and dbus
+
+### Installing FreeIPA client
+RUN yum install -y ipa-client dbus-python perl 'perl(Data::Dumper)' 'perl(Time::HiRes)' && yum clean all
+
+### Adding dbus.service and systemctl
 ADD systemd/dbus.service /etc/systemd/system/dbus.service
+RUN ln -sf dbus.service /etc/systemd/system/messagebus.service
+
 ADD systemd/systemctl /usr/bin/systemctl
-RUN ln -sf dbus.service /etc/systemd/system/messagebus.service && \
-	chmod -v +x /usr/bin/systemctl && \
-	yum swap -y -- remove fakesystemd -- install systemd systemd-libs && yum clean all
+RUN chmod -v +x /usr/bin/systemctl
 
 
 ### Installing FreeIPA client

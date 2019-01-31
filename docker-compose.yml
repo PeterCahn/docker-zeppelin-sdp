@@ -3,7 +3,7 @@ services:
 
   zeppelin:
     container_name: zeppelin
-    image: pietrocannalire/zeppelin:0.7.3
+    image: pietrocannalire/zeppelin:0.8.1
     environment:
       - ANONYMOUS_DENIED=true
       - DOMAIN=$DOMAIN
@@ -16,7 +16,7 @@ services:
       - THE_ADMIN_PASSWORD=$THE_ADMIN_PASSWORD
       - TOOL=$TOOL
     ports:
-       - 8081:8080
+       - 8080:8080
        - 8443:8443
     volumes:
        - ./logs:$ZEPPELIN_HOME/logs
