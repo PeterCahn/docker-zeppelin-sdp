@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 rm -f ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
 cp ${ZEPPELIN_HOME}/conf/zeppelin-site.xml.template ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
 

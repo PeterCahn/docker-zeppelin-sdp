@@ -75,8 +75,8 @@ case "$1" in
 			cat $sourceRootDir/hosts > /etc/hosts
 			cat $sourceRootDir/hostname > /etc/hostname
 			cat $sourceRootDir/hostname > /etc/hostname.ipa-client
-			#rm -f $sourceRootDir/hostname
-			#rm -f $sourceRootDir/hosts
+			rm -f $sourceRootDir/hostname
+			rm -f $sourceRootDir/hosts
 		fi
 		
 	;;
