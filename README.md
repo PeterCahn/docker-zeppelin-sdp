@@ -35,4 +35,3 @@ Due modalità di esecuzione:
 	facendo attenzione a sostituire il nome corretto dell'immagine alla voce *image: ...* (per esempio *my-zeppelin:my-tag*)
 
 N.B.: se le porte 8080 e 8443 sono già occupate, modificare la porta specificata a sinistra dei due punti nel parametro *-p*, che si riferisce all'host)
-

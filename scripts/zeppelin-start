@@ -16,6 +16,24 @@ if [ ! -z "$HOMESCREEN" ]; then
   sed -i '/>zeppelin.notebook.homescreen.hide</!b;n;c\ \ <value>true</value>' ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
 fi
 
+# Run SSH service: https://docs.docker.com/engine/examples/running_ssh_service/
+if [ -z "$ZEPPELINUSER_PASSWORD" ] ; then 
+	export ZEPPELINUSER_PASSWORD=my-pass # overwrite with a personal pw
+fi
+# Create new user 
+useradd zeppelin
+echo $ZEPPELINUSER_PASSWORD | passwd zeppelin --stdin 
+chown zeppelin:zeppelin /etc/security/keytabs 
+#Prepare for running SSH
+mkdir /var/run/sshd 
+echo "zeppelin:$ZEPPELINUSER_PASSWORD" | chpasswd 
+sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config 
+sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd 
+export NOTVISIBLE="in users profile"
+echo "export VISIBLE=now" >> /etc/profile 
+/usr/bin/ssh-keygen -A 
+/usr/sbin/sshd	
+
 function stop_running () {
     echo "[$0] SIGTERM received. Gracefully stopping."
     
