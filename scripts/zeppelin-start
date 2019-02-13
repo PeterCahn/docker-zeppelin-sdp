@@ -160,9 +160,9 @@ else
 	
 	# Fix for Zeppelin 0.8.1
 	sed -i "/^\(user.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
-	sed "/^\(\/api\/interpreter.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
-	sed "/^\(\/api\/configurations.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
-	sed "/^\(\/api\/credential.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
+	sed -i "/^\(\/api\/interpreter.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
+	sed -i "/^\(\/api\/configurations.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
+	sed -i "/^\(\/api\/credential.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
 	
 	/usr/sbin/freeipa-backupfiles.sh backup
 
