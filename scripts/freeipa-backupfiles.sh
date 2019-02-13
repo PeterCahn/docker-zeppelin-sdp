@@ -14,34 +14,34 @@ case "$1" in
 		if [ -n "$2" ] ; then
 			destRootDir="$2"
 		else
-			destRootDir="/etc/security/freeipa-backups"
+			destRootDir="/etc/security/freeipa-backups/etc"
 		fi
 
 		if [ ! -d $destRootDir ] ; then
 			mkdir -p $destRootDir
 		fi
 
-		mkdir -p $destRootDir/etc/sssd
-		mkdir -p $destRootDir/etc/ipa
-		mkdir -p $destRootDir/etc/openldap
-		mkdir -p $destRootDir/etc/pki/nssdb
-		mkdir -p $destRootDir/etc/sysconfig
-		mkdir -p $destRootDir/etc/sysconfig/network
-		mkdir -p $destRootDir/etc/ntp
+		mkdir -p $destRootDir/sssd
+		mkdir -p $destRootDir/ipa
+		mkdir -p $destRootDir/openldap
+		mkdir -p $destRootDir/pki/nssdb
+		mkdir -p $destRootDir/sysconfig
+		mkdir -p $destRootDir/sysconfig/network
+		mkdir -p $destRootDir/ntp
 
-		cp -f /etc/sssd/sssd.conf		$destRootDir/etc/sssd/sssd.conf
-		cp -f /etc/sysconfig/ntpd       $destRootDir/etc/sysconfig/
-		cp -f /etc/ntp/step-tickers     $destRootDir/etc/ntp/step-tickers
-		cp -f /etc/krb5.conf            $destRootDir/etc/krb5.conf
-		cp -f /etc/ipa/ca.crt           $destRootDir/etc/ipa/ca.crt
-		cp -f /etc/ipa/default.conf     $destRootDir/etc/ipa/default.conf
-		cp -f /etc/openldap/ldap.conf   $destRootDir/etc/openldap/ldap.conf
-		cp -f /etc/pki/nssdb/*          $destRootDir/etc/pki/nssdb
-		cp -f /etc/krb5.keytab          $destRootDir/etc/krb5.keytab
+		cp -vf /etc/sssd/sssd.conf		 $destRootDir/sssd/sssd.conf
+		cp -vf /etc/sysconfig/ntpd       $destRootDir/sysconfig/
+		cp -vf /etc/ntp/step-tickers     $destRootDir/ntp/step-tickers
+		cp -vf /etc/krb5.conf            $destRootDir/krb5.conf
+		cp -vf /etc/ipa/ca.crt           $destRootDir/ipa/ca.crt
+		cp -vf /etc/ipa/default.conf     $destRootDir/ipa/default.conf
+		cp -vf /etc/openldap/ldap.conf   $destRootDir/openldap/ldap.conf
+		cp -vf /etc/pki/nssdb/*          $destRootDir/pki/nssdb
+		cp -vf /etc/krb5.keytab          $destRootDir/krb5.keytab
 
-		cp -f /etc/hosts                $destRootDir/etc/hosts
-		cp -f /etc/hostname             $destRootDir/etc/hostname
-		cp -f /etc/hostname             $destRootDir/etc/hostname.ipa-client
+		cp -vf /etc/hosts                $destRootDir/hosts
+		cp -vf /etc/hostname             $destRootDir/hostname
+		cp -vf /etc/hostname             $destRootDir/hostname.ipa-client
 
 	;;
 	
@@ -62,21 +62,21 @@ case "$1" in
 
 		if [ -d "$sourceRootDir/" -a -d "$sourceRootDir/etc/sssd" -a -d "$sourceRootDir/etc/sysconfig" -a -d "$sourceRootDir/etc/ntp" -a -d "$sourceRootDir/etc/ipa" -a -d "$sourceRootDir/etc/openldap" -a -d "$sourceRootDir/etc/pki" ]; then
 
-			/bin/mv -f $sourceRootDir/sssd/sssd.conf 	/etc/sssd/sssd.conf
-			/bin/mv -f $sourceRootDir/sysconfig/ntpd	/etc/sysconfig/
-			/bin/mv -f $sourceRootDir/ntp/step-tickers	/etc/ntp/step-tickers
-			/bin/mv -f $sourceRootDir/krb5.conf		/etc/krb5.conf
-			/bin/mv -f $sourceRootDir/ipa/ca.crt 		/etc/ipa/ca.crt
-			/bin/mv -f $sourceRootDir/ipa/default.conf 	/etc/ipa/default.conf
-			/bin/mv -f $sourceRootDir/openldap/ldap.conf 	/etc/openldap/ldap.conf
-			/bin/mv -f $sourceRootDir/pki/nssdb/* 		/etc/pki/nssdb
-			/bin/mv -f $sourceRootDir/krb5.keytab 		/etc/krb5.keytab
+			/bin/mv -vf $sourceRootDir/sssd/sssd.conf 		/etc/sssd/sssd.conf
+			/bin/mv -vf $sourceRootDir/sysconfig/ntpd		/etc/sysconfig/
+			/bin/mv -vf $sourceRootDir/ntp/step-tickers		/etc/ntp/step-tickers
+			/bin/mv -vf $sourceRootDir/krb5.conf			/etc/krb5.conf
+			/bin/mv -vf $sourceRootDir/ipa/ca.crt 			/etc/ipa/ca.crt
+			/bin/mv -vf $sourceRootDir/ipa/default.conf 	/etc/ipa/default.conf
+			/bin/mv -vf $sourceRootDir/openldap/ldap.conf 	/etc/openldap/ldap.conf
+			/bin/mv -vf $sourceRootDir/pki/nssdb/* 			/etc/pki/nssdb
+			/bin/mv -vf $sourceRootDir/krb5.keytab 			/etc/krb5.keytab
 
 			cat $sourceRootDir/hosts > /etc/hosts
 			cat $sourceRootDir/hostname > /etc/hostname
 			cat $sourceRootDir/hostname > /etc/hostname.ipa-client
-			rm -f $sourceRootDir/hostname
-			rm -f $sourceRootDir/hosts
+			#rm -vf $sourceRootDir/hostname
+			#rm -vf $sourceRootDir/hosts
 		fi
 		
 	;;
@@ -91,7 +91,7 @@ case "$1" in
 		fi
 
 		if [ -d $targetDir/etc ] ; then
-			rm -rf $targetDir/etc
+			rm -rvf $targetDir/etc
 		fi
 		
 	;;
