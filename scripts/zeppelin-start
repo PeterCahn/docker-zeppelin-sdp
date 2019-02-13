@@ -158,6 +158,12 @@ else
 	sed -i "/^#ldapRealm.userDnTemplate.*/s//ldapRealm.userDnTemplate = uid={0},CN=users,CN=accounts,DC=$DC1,DC=$DC2,DC=$DC3/" $ZEPPELIN_HOME/conf/shiro.ini
 	sed -i "/^JAVA_OPTS+.*/s//JAVA_OPTS+=\" -Dhttps.proxyHost=$PROXYHOST -Dhttps.proxyPort=$PROXYPORT -Dhttp.proxyHost=$PROXYHOST -Dhttp.proxyPort=$PROXYPORT -Dzeppelin.log.file=\${ZEPPELIN_LOGFILE}\"/" $ZEPPELIN_HOME/bin/zeppelin.sh
 	
+	# Fix for Zeppelin 0.8.1
+	sed -i "/^\(user.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
+	sed "/^\(\/api\/interpreter.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
+	sed "/^\(\/api\/configurations.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
+	sed "/^\(\/api\/credential.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
+	
 	/usr/sbin/freeipa-backupfiles.sh backup
 
 fi
