@@ -17,7 +17,9 @@ if [ ! -f ${ZEPPELIN_HOME}/conf/zeppelin-site.xml ]; then
 	fi
 fi
 
-sed -i "/^\(admin = \).*\(, admin\).*/s//\1$ZEPPELIN_ADMINPASS\2/" $ZEPPELIN_HOME/conf/shiro.ini
+if [ -n "$ZEPPELIN_PASSWORD"  ]; then
+	sed -i "/^\(admin = \).*\(, admin\).*/s//\1$ZEPPELIN_PASSWORD\2/" $ZEPPELIN_HOME/conf/shiro.ini
+fi
 
 function stop_running () {
     echo "[$0] SIGTERM received. Gracefully stopping."
