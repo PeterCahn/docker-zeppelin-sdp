@@ -48,7 +48,7 @@ if [ -f /etc/ipa/ca.crt ] ; then
 	if [ -f /etc/hostname.ipa-client ] ; then
 		HOSTNAME_IPA=$(cat /etc/hostname.ipa-client)
 	else
-		HOSTNAME_IPA=$(hostname).$TOOL.$IPASERVERDOMAIN
+		HOSTNAME_IPA=zeppelin.$(hostname).$IPASERVERDOMAIN
 		echo "$HOSTNAME_IPA" > /etc/hostname.ipa-client
 	fi
 	
@@ -69,7 +69,7 @@ else
 	# Set hostname for ipa-client-install
 	IPA=$( curl -si http://$IPASERVER/ | perl -lne 'm!^Location:\shttps?://(.+?)/! and print $1' )
 	IPASERVERDOMAIN=${IPA#*.}
-	HOSTNAME_FQDN=$TOOL.$PROJECT.$IPASERVERDOMAIN
+	HOSTNAME_FQDN=zeppelin.$PROJECT.$IPASERVERDOMAIN
 	HOSTNAME_OPTS=--hostname=$HOSTNAME_FQDN
 	
 	# Try to restore a previous IPA client installation
@@ -102,7 +102,7 @@ else
 	#rancher_host_entry=$(tail -n 1 /etc/hosts.tmp | head -n1 | awk '{print $2;}')
 
 	IP=$(hostname -I | sed 's/^[ \t]*//;s/[ \t]*$//')
-        sed -i "s/^.*${IP}.*/${IP} ${TOOL}.${PROJECT}.${IPASERVERDOMAIN} ${TOOL}.${PROJECT}/" /etc/hosts.tmp
+        sed -i "s/^.*${IP}.*/${IP} zeppelin.${PROJECT}.${IPASERVERDOMAIN} zeppelin.${PROJECT}/" /etc/hosts.tmp
 	cat /etc/hosts.tmp > /etc/hosts
 	echo "/etc/hosts updated..."
 	echo "$HOSTNAME_FQDN" > /etc/hostname
