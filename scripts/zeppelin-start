@@ -17,10 +17,6 @@ if [ ! -f ${ZEPPELIN_HOME}/conf/zeppelin-site.xml ]; then
 	fi
 fi
 
-if [ -n "$ZEPPELIN_PASSWORD"  ]; then
-	sed -i "/^\(admin = \).*\(, admin\).*/s//\1$ZEPPELIN_PASSWORD\2/" $ZEPPELIN_HOME/conf/shiro.ini
-fi
-
 function stop_running () {
     echo "[$0] SIGTERM received. Gracefully stopping."
     
@@ -144,6 +140,16 @@ else
 	sed -i "/^#ldapRealm.contextFactory.environment\[ldap.searchBase\].*/s//ldapRealm.contextFactory.environment\[ldap.searchBase\] = DC=$DC1,DC=$DC2,DC=$DC3/" $ZEPPELIN_HOME/conf/shiro.ini
 	sed -i "/^#ldapRealm.userDnTemplate.*/s//ldapRealm.userDnTemplate = uid={0},CN=users,CN=accounts,DC=$DC1,DC=$DC2,DC=$DC3/" $ZEPPELIN_HOME/conf/shiro.ini
 	sed -i "/^JAVA_OPTS+.*/s//JAVA_OPTS+=\" -Dhttps.proxyHost=$PROXYHOST -Dhttps.proxyPort=$PROXYPORT -Dhttp.proxyHost=$PROXYHOST -Dhttp.proxyPort=$PROXYPORT -Dzeppelin.log.file=\${ZEPPELIN_LOGFILE}\"/" $ZEPPELIN_HOME/bin/zeppelin.sh
+	
+	sed -i "/^\(user.*\)/s//#\1/" $ZEPPELIN_HOME/conf/shiro.ini
+
+	if [ -n "$ZEPPELIN_ADMIN_USER"  ]; then
+			sed -i "/^.*\( =.*, admin\).*/s//$ZEPPELIN_ADMIN_USER\1/" $ZEPPELIN_HOME/conf/shiro.ini
+	fi
+
+	if [ -n "$ZEPPELIN_ADMIN_PASSWORD"  ]; then
+			sed -i "/^\(.*\)= .*\(, admin\).*/s//\1= $ZEPPELIN_ADMIN_PASSWORD\2/" $ZEPPELIN_HOME/conf/shiro.ini
+	fi	
 	
 	/usr/sbin/freeipa-backupfiles.sh backup
 
