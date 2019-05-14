@@ -4,7 +4,7 @@
 if [ ! -f ${ZEPPELIN_HOME}/conf/zeppelin-site.xml ]; then
 	cp ${ZEPPELIN_HOME}/conf/zeppelin-site.xml.template ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
 	# Disable anonymous login
-	sed -i '/>zeppelin.anonymous.allowed</!b;n;c\ \ <value>false</value>' ${ZEPPELIN_HOME}/conf/zeppelin-site.xml; fi
+	sed -i '/>zeppelin.anonymous.allowed</!b;n;c\ \ <value>false</value>' ${ZEPPELIN_HOME}/conf/zeppelin-site.xml;
 	
 	# Groovy interpreter
 	sed -i "s@\(<value>org.apache.zeppelin.spark.SparkInterpreter.*\)\(</value.*\)@\1,org.apache.zeppelin.groovy.GroovyInterpreter\2@" ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
