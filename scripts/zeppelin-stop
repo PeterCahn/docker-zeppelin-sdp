@@ -10,7 +10,7 @@ if [ -f /etc/ipa/ca.crt ] ; then
 	else
 		IPA=$( curl -si http://$IPASERVER/ | perl -lne 'm!^Location:\shttps?://(.+?)/! and print $1' )
 		IPASERVERDOMAIN=${IPA#*.}
-		HOSTNAME_IPA=$TOOL.$( hostname ).$IPASERVERDOMAIN
+		HOSTNAME_IPA=zeppelin.$PROJECT.$IPASERVERDOMAIN
 	fi
 	
 	echo "Unenrolling client $HOSTNAME_IPA"

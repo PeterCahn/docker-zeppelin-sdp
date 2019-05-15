@@ -48,7 +48,7 @@ if [ -f /etc/ipa/ca.crt ] ; then
 	if [ -f /etc/hostname.ipa-client ] ; then
 		HOSTNAME_IPA=$(cat /etc/hostname.ipa-client)
 	else
-		HOSTNAME_IPA=zeppelin.$(hostname).$IPASERVERDOMAIN
+		HOSTNAME_IPA=zeppelin.$PROJECT.$IPASERVERDOMAIN
 		echo "$HOSTNAME_IPA" > /etc/hostname.ipa-client
 	fi
 	
@@ -102,7 +102,7 @@ else
 	#rancher_host_entry=$(tail -n 1 /etc/hosts.tmp | head -n1 | awk '{print $2;}')
 
 	IP=$(hostname -I | sed 's/^[ \t]*//;s/[ \t]*$//')
-        sed -i "s/^.*${IP}.*/${IP} zeppelin.${PROJECT}.${IPASERVERDOMAIN} zeppelin.${PROJECT}/" /etc/hosts.tmp
+    sed -i "s/^.*${IP}.*/${IP} zeppelin.${PROJECT}.${IPASERVERDOMAIN} zeppelin.${PROJECT}/" /etc/hosts.tmp
 	cat /etc/hosts.tmp > /etc/hosts
 	echo "/etc/hosts updated..."
 	echo "$HOSTNAME_FQDN" > /etc/hostname
@@ -111,7 +111,8 @@ else
 	
 		echo "First ipa-client installation for host $HOSTNAME_FQDN"
 		# FreeIPA Client Installation
-		/usr/sbin/ipa-client-install $IPA_CLIENT_INSTALL_OPTS --force --no-nisdomain -p admin -w "$PASSWORD" -U -v  --mkhomedir --realm=$REALM --domain=$IPASERVERDOMAIN --server=$IPASERVER  --enable-dns-updates < /dev/null
+		REALM=$(echo $IPASERVERDOMAIN | tr '[:lower:]' '[:upper:]')
+		/usr/sbin/ipa-client-install $IPA_CLIENT_INSTALL_OPTS --force --no-nisdomain -p admin -w "$FREEIPA_ADMIN_PASSWORD" -U -v  --mkhomedir --realm=$REALM --domain=$IPASERVERDOMAIN --server=$IPASERVER  --enable-dns-updates < /dev/null
 		cp -f /etc/hostname /etc/hostname.ipa-client
 		echo "FreeIPA-enrolled."
 	fi
@@ -124,12 +125,12 @@ else
 	sleep 50
 	getent passwd
 	echo "kiniting admin"
-	echo -n "$PASSWORD" | kinit admin
+	echo -n "$FREEIPA_ADMIN_PASSWORD" | kinit admin
 
-	# $DOMAIN is in the form of "domain.organization.com (DC1.DC2.DC3)"
-	DC1=$(cut -d'.' -f1 <<<"$DOMAIN")
-	DC2=$(cut -d'.' -f2 <<<"$DOMAIN")
-	DC3=$(cut -d'.' -f3 <<<"$DOMAIN")
+	# $IPASERVERDOMAIN is in the form of "domain.organization.com (DC1.DC2.DC3)"
+	DC1=$(cut -d'.' -f1 <<<"$IPASERVERDOMAIN")
+	DC2=$(cut -d'.' -f2 <<<"$IPASERVERDOMAIN")
+	DC3=$(cut -d'.' -f3 <<<"$IPASERVERDOMAIN")
 	# $PROXY is in the form of "http[s]://PROXYHOST:PROXYPORT"
 	PROXYHOST=$(cut -d'/' -f3 <<<$(cut -d':' -f2 <<<"$PROXY"))
 	PROXYPORT=$(cut -d':' -f3 <<<$PROXY)
