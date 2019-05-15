@@ -38,6 +38,7 @@ function run_zeppelin {
 	${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh start; sleep 1	
 }
 
+/usr/sbin/freeipa-backupfiles.sh restore
 
 if [ -f /etc/ipa/ca.crt ] ; then
 	# Lo sto riavviando: tutto è dove dovrebbe stare	
@@ -72,8 +73,6 @@ else
 	HOSTNAME_FQDN=zeppelin.$PROJECT.$IPASERVERDOMAIN
 	HOSTNAME_OPTS=--hostname=$HOSTNAME_FQDN
 	
-	# Try to restore a previous IPA client installation
-	/usr/sbin/freeipa-backupfiles.sh restore
 	if [ -f /etc/ipa/ca.crt ] ; then
 		echo "Found a previous installation of FreeIPA client for host $HOSTNAME_FQDN"
 		if [ -n "$(ipa host-show $HOSTNAME_FQDN)" ] ; then
@@ -122,7 +121,7 @@ else
 	echo "Restarting SSSD"
 	/usr/bin/systemctl restart sssd
 	echo "Aligning the users"
-	sleep 50
+	sleep 10
 	getent passwd
 	echo "kiniting admin"
 	echo -n "$FREEIPA_ADMIN_PASSWORD" | kinit admin
@@ -151,11 +150,6 @@ else
 	if [ -n "$ZEPPELIN_ADMIN_PASSWORD"  ]; then
 			sed -i "/^\(.*\)= .*\(, admin\).*/s//\1= $ZEPPELIN_ADMIN_PASSWORD\2/" $ZEPPELIN_HOME/conf/shiro.ini
 	fi	
-
-	# Set interpreters if provided
-	if [ -f ${ZEPPELIN_HOME}/interpreter.json ] ; then
-		 cp -f ${ZEPPELIN_HOME}/interpreter.json ${ZEPPELIN_HOME}/conf/interpreter.json
-	fi
 
 	/usr/sbin/freeipa-backupfiles.sh backup
 
