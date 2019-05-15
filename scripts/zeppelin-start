@@ -150,7 +150,12 @@ else
 	if [ -n "$ZEPPELIN_ADMIN_PASSWORD"  ]; then
 			sed -i "/^\(.*\)= .*\(, admin\).*/s//\1= $ZEPPELIN_ADMIN_PASSWORD\2/" $ZEPPELIN_HOME/conf/shiro.ini
 	fi	
-	
+
+	# Set interpreters if provided
+	if [ -f ${ZEPPELIN_HOME}/interpreter.json ] ; then
+		 cp -f ${ZEPPELIN_HOME}/interpreter.json ${ZEPPELIN_HOME}/conf/interpreter.json
+	fi
+
 	/usr/sbin/freeipa-backupfiles.sh backup
 
 fi
