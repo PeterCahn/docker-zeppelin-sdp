@@ -21,7 +21,8 @@ services:
        - $EXPOSED_PORT_HTTPS:8443
     volumes:
        - ./logs:$ZEPPELIN_HOME/logs
-       - ./notebook:$ZEPPELIN_HOME/notebook
        - ./freeipa-backups:/etc/security/freeipa-backups
-       - ./keytabs:/etc/security/keytabs
+       - ./zeppelin-backup/notebook:$ZEPPELIN_HOME/notebook
+       - ./zeppelin-backup/keytabs:/etc/security/keytabs
+       - ./zeppelin-backup/interpreters/:$ZEPPELIN_HOME/interpreters/
     stop_grace_period: 30s

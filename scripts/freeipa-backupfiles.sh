@@ -42,7 +42,9 @@ case "$1" in
 		cp -vf /etc/hosts                $destRootDir/hosts
 		cp -vf /etc/hostname             $destRootDir/hostname
 		cp -vf /etc/hostname             $destRootDir/hostname.ipa-client
-
+		
+		cp -vf $ZEPPELIN_HOME/conf/interpreter.json $ZEPPELIN_HOME/interpreters/interpreter.json 
+		
 	;;
 	
 	"restore" )
@@ -77,7 +79,13 @@ case "$1" in
 			cat $sourceRootDir/hostname > /etc/hostname.ipa-client
 			#rm -vf $sourceRootDir/hostname
 			#rm -vf $sourceRootDir/hosts
+		
 		fi
+		
+		if [ -f $ZEPPELIN_HOME/interpreters/interpreter.json ] ; then
+		    cp -vf $ZEPPELIN_HOME/interpreters/interpreter.json /opt/zeppelin/conf/interpreter.json
+		fi
+		
 		
 	;;
 	
