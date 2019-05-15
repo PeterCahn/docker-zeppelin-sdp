@@ -24,3 +24,4 @@ services:
        - ./notebook:$ZEPPELIN_HOME/notebook
        - ./freeipa-backups:/etc/security/freeipa-backups
        - ./keytabs:/etc/security/keytabs
+    stop_grace_period: 30s
