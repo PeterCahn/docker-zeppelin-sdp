@@ -151,8 +151,9 @@ else
 			sed -i "/^\(.*\)= .*\(, admin\).*/s//\1= $ZEPPELIN_ADMIN_PASSWORD\2/" $ZEPPELIN_HOME/conf/shiro.ini
 	fi	
 
-	/usr/sbin/freeipa-backupfiles.sh backup
+        cp -rvn $ZEPPELIN_HOME/default-notebooks/* $ZEPPELIN_HOME/notebook/
 
+	/usr/sbin/freeipa-backupfiles.sh backupv
 fi
 
 run_zeppelin

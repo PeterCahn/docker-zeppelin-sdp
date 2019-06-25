@@ -1,0 +1,87 @@
+{
+  "paragraphs": [
+    {
+      "text": "%angular\n\n<script type=\"text/javascript\">\n\nfunction updateNotebookList() {\n\n  var notebooks = angular.element($('#notebooks'));\n  var scope = notebooks.scope();\n\n  var xmlHttp = new XMLHttpRequest();\n  xmlHttp.open( \"GET\", \"api/notebook\", false );\n  xmlHttp.send( null );\n  var jsonNotebooks = JSON.parse(xmlHttp.responseText).body;\n\n  scope.notebooks = jsonNotebooks;\n\n  window.setTimeout(function() {\n    notebooks.triggerHandler('input');\n  }, 100);\n\n  return jsonNotebooks;\n}\n\nfunction extractSparkCode(notebook) {\n    if (!notebook || !notebook[\"paragraphs\"])\n      return \"emtpy: no source code inside!\";\n\n    // -- extract code paragraph by paragraph\n\n    var script =\n\"//--------------------------------------------------------\\n\" +\n\"// Notebook Name: \" +  notebook[\"name\"] + \"\\n\" +\n\"// Id: \" + notebook[\"id\"] + \"\\n\" +\n\"// Notebook URI: /#/notebook/\" + notebook[\"id\"] + \"\\n\" +\n\"//--------------------------------------------------------\\n\\n\\n\";\n\n    notebook[\"paragraphs\"].forEach(function(item) {\n      var editorMode = item[\"config\"][\"editorMode\"] || \"\";\n      if (editorMode.contains(\"scala\")) {\n          script +=\n\"// --\\n\" +\n\"// TITLE: \" + (item[\"title\"] ? item[\"title\"] : \"NO TITLE GIVEN\") + \"\\n\" +\n\"// @ \" + item[\"dateCreated\"] + \", updated on \" + item[\"dateUpdated\"] + \"\\n\" +\n\"// --\\n\\n\" +\n(item[\"text\"] ? item[\"text\"] : \"// No source code found!\") + \"\\n\\n\";\n        }\n    });\n\n    return script;\n}\n\nfunction displaySource() {\n\n  var notebookId = angular.element($('#notebookId'));\n  var notebookSource = angular.element($('#notebookSource'));\n  var script = angular.element($('#scalaScript'));\n\n  var id = notebookId.val();\n\n  notebookSource.val(\"\");\n  script.val(\"\");\n\n  if (!id) {\n    // do something \"default\" if we have no ID specified (!)\n\n  } else {\n    var xmlHttp = new XMLHttpRequest();\n    xmlHttp.open( \"GET\", \"api/notebook/\" + id, false );\n    xmlHttp.send( null );\n    var notebook = JSON.parse(xmlHttp.responseText).body;\n\n    notebookSource.val(JSON.stringify(notebook, null, 2));\n    script.val(extractSparkCode(notebook));\n  }\n\n  window.setTimeout(function() {\n    notebookSource.triggerHandler('input');\n    script.triggerHandler('input');\n  }, 100);\n\n}\n\n</script>\n\n<div id=\"mainApp\" ng-init=\"notebooks=updateNotebookList()\">\n\n  <table border=\"0\" width=\"100%\" style=\"border-spacing: 6px; border-collapse:separate;\">\n\n    <tr style=\"border-collapse:separate; padding:0;\">\n\n      <td>\n        <select class=\"form-control\" ng-options=\"n.name for n in notebooks track by n.id\" ng-model=\"notebookId\" id=\"notebooks\" style=\"width: 500px; overflow: hidden; white-space: nowrap; text-overflow:ellipsis;\">\n          <option value=\"\" style=\"overflow: hidden;\">-- choose a notebook --</option>\n        </select>\n      </td>\n\n      <td width=\"100%\">\n        <button id=\"btnRefresh\" type=\"submit\" class=\"btn btn-info\" onclick=\"updateNotebookList()\">Refresh list!</button>\n        <button id=\"btnGet\" type=\"submit\" class=\"btn btn-success\" onclick=\"displaySource()\">Get notebook ...</button>\n      </td>\n\n    </tr>\n\n    <tr style=\"border-collapse:separate; padding:0;\">\n\n      <td><code>\n      <input id=\"notebookId\" type=\"text\" class=\"form-control\" ng-readonly=\"true\" ng-model=\"notebookId.id\" ng-value=\"notebookId.id\" style=\"width: 500px;\" />\n      </td></code>\n\n      <td width=\"100%\">\n        <h5>Here and above you can choose a a notebook and \"export\" its Spark code into the right panel.</h5>\n      </td>\n\n    </tr>\n\n    <tr>\n      <td><code>\n        <textarea id=\"notebookSource\" class=\"form-control\" rows=\"15\" style=\"width: 500px; background-color: lightblue; font-size: 90%;\" ng-readonly=\"true\" ng-model=\"notebookSource\" />\n      </code></td>\n      <td width=\"100%\"><code>\n        <textarea id=\"scalaScript\" class=\"form-control\" rows=\"15\" ng-model=\"scalaScript\"  style=\"font-size: 90%;\" />\n      </code></td>\n    </tr>\n\n  </table>\n\n</div>\n",
+      "user": "admin",
+      "dateUpdated": "Jun 25, 2019 9:18:09 AM",
+      "config": {
+        "lineNumbers": false,
+        "tableHide": false,
+        "editorSetting": {
+          "editOnDblClick": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/undefined",
+        "editorHide": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 486.75,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "ANGULAR",
+            "data": "<script type=\"text/javascript\">\n\nfunction updateNotebookList() {\n\n  var notebooks = angular.element($('#notebooks'));\n  var scope = notebooks.scope();\n\n  var xmlHttp = new XMLHttpRequest();\n  xmlHttp.open( \"GET\", \"api/notebook\", false );\n  xmlHttp.send( null );\n  var jsonNotebooks = JSON.parse(xmlHttp.responseText).body;\n\n  scope.notebooks = jsonNotebooks;\n\n  window.setTimeout(function() {\n    notebooks.triggerHandler('input');\n  }, 100);\n\n  return jsonNotebooks;\n}\n\nfunction extractSparkCode(notebook) {\n    if (!notebook || !notebook[\"paragraphs\"])\n      return \"emtpy: no source code inside!\";\n\n    // -- extract code paragraph by paragraph\n\n    var script =\n\"//--------------------------------------------------------\\n\" +\n\"// Notebook Name: \" +  notebook[\"name\"] + \"\\n\" +\n\"// Id: \" + notebook[\"id\"] + \"\\n\" +\n\"// Notebook URI: /#/notebook/\" + notebook[\"id\"] + \"\\n\" +\n\"//--------------------------------------------------------\\n\\n\\n\";\n\n    notebook[\"paragraphs\"].forEach(function(item) {\n      var editorMode = item[\"config\"][\"editorMode\"] || \"\";\n      if (editorMode.contains(\"scala\")) {\n          script +=\n\"// --\\n\" +\n\"// TITLE: \" + (item[\"title\"] ? item[\"title\"] : \"NO TITLE GIVEN\") + \"\\n\" +\n\"// @ \" + item[\"dateCreated\"] + \", updated on \" + item[\"dateUpdated\"] + \"\\n\" +\n\"// --\\n\\n\" +\n(item[\"text\"] ? item[\"text\"] : \"// No source code found!\") + \"\\n\\n\";\n        }\n    });\n\n    return script;\n}\n\nfunction displaySource() {\n\n  var notebookId = angular.element($('#notebookId'));\n  var notebookSource = angular.element($('#notebookSource'));\n  var script = angular.element($('#scalaScript'));\n\n  var id = notebookId.val();\n\n  notebookSource.val(\"\");\n  script.val(\"\");\n\n  if (!id) {\n    // do something \"default\" if we have no ID specified (!)\n\n  } else {\n    var xmlHttp = new XMLHttpRequest();\n    xmlHttp.open( \"GET\", \"api/notebook/\" + id, false );\n    xmlHttp.send( null );\n    var notebook = JSON.parse(xmlHttp.responseText).body;\n\n    notebookSource.val(JSON.stringify(notebook, null, 2));\n    script.val(extractSparkCode(notebook));\n  }\n\n  window.setTimeout(function() {\n    notebookSource.triggerHandler('input');\n    script.triggerHandler('input');\n  }, 100);\n\n}\n\n</script>\n\n<div id=\"mainApp\" ng-init=\"notebooks=updateNotebookList()\">\n\n  <table border=\"0\" width=\"100%\" style=\"border-spacing: 6px; border-collapse:separate;\">\n\n    <tr style=\"border-collapse:separate; padding:0;\">\n\n      <td>\n        <select class=\"form-control\" ng-options=\"n.name for n in notebooks track by n.id\" ng-model=\"notebookId\" id=\"notebooks\" style=\"width: 500px; overflow: hidden; white-space: nowrap; text-overflow:ellipsis;\">\n          <option value=\"\" style=\"overflow: hidden;\">-- choose a notebook --</option>\n        </select>\n      </td>\n\n      <td width=\"100%\">\n        <button id=\"btnRefresh\" type=\"submit\" class=\"btn btn-info\" onclick=\"updateNotebookList()\">Refresh list!</button>\n        <button id=\"btnGet\" type=\"submit\" class=\"btn btn-success\" onclick=\"displaySource()\">Get notebook ...</button>\n      </td>\n\n    </tr>\n\n    <tr style=\"border-collapse:separate; padding:0;\">\n\n      <td><code>\n      <input id=\"notebookId\" type=\"text\" class=\"form-control\" ng-readonly=\"true\" ng-model=\"notebookId.id\" ng-value=\"notebookId.id\" style=\"width: 500px;\" />\n      </td></code>\n\n      <td width=\"100%\">\n        <h5>Here and above you can choose a a notebook and \"export\" its Spark code into the right panel.</h5>\n      </td>\n\n    </tr>\n\n    <tr>\n      <td><code>\n        <textarea id=\"notebookSource\" class=\"form-control\" rows=\"15\" style=\"width: 500px; background-color: lightblue; font-size: 90%;\" ng-readonly=\"true\" ng-model=\"notebookSource\" />\n      </code></td>\n      <td width=\"100%\"><code>\n        <textarea id=\"scalaScript\" class=\"form-control\" rows=\"15\" ng-model=\"scalaScript\"  style=\"font-size: 90%;\" />\n      </code></td>\n    </tr>\n\n  </table>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1561017191853_1655906126",
+      "id": "20180604-164254_1768961356",
+      "dateCreated": "Jun 20, 2019 7:53:11 AM",
+      "dateStarted": "Jun 25, 2019 9:18:09 AM",
+      "dateFinished": "Jun 25, 2019 9:18:09 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%angular\n",
+      "user": "ebruschi",
+      "dateUpdated": "Jun 20, 2019 10:07:08 AM",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "editOnDblClick": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/undefined",
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1561017191853_1655906126",
+      "id": "20180606-103716_1364150184",
+      "dateCreated": "Jun 20, 2019 7:53:11 AM",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "! Utils ! get Scala Code",
+  "id": "2EDDP155U",
+  "angularObjects": {
+    "2EC7XJ3S9:shared_process": [],
+    "2EDE7N8NJ:shared_process": [],
+    "2EDK7MM8W:shared_process": [],
+    "2EEQMB5B4:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
