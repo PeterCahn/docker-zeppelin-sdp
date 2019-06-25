@@ -51,7 +51,7 @@ VOLUME ${ZEPPELIN_HOME}/logs \
 ADD scripts/zeppelin-stop /usr/sbin/zeppelin-stop
 ADD scripts/freeipa-backupfiles.sh /usr/sbin/freeipa-backupfiles.sh
 ADD scripts/zeppelin-start /usr/sbin/zeppelin-start
-ADD scripts/default-notebooks/* ${ZEPPELIN_HOME}/default-notebooks/
+ADD scripts/default-notebooks/ ${ZEPPELIN_HOME}/default-notebooks/
 RUN chmod -v +x /usr/sbin/zeppelin-stop /usr/sbin/freeipa-backupfiles.sh /usr/sbin/zeppelin-start
 
 WORKDIR ${ZEPPELIN_HOME}
