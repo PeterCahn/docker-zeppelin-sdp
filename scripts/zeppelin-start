@@ -153,7 +153,7 @@ else
 
         cp -rvn $ZEPPELIN_HOME/default-notebooks/* $ZEPPELIN_HOME/notebook/
 
-	/usr/sbin/freeipa-backupfiles.sh backupv
+	/usr/sbin/freeipa-backupfiles.sh backup
 fi
 
 run_zeppelin
