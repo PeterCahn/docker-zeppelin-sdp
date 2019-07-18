@@ -49,14 +49,14 @@ VOLUME ${ZEPPELIN_HOME}/logs \
 		   
 # Add files to start/stop Zeppelin and manage freeipa backup files
 ADD scripts/zeppelin-stop /usr/sbin/zeppelin-stop
-ADD scripts/freeipa-backupfiles.sh /usr/sbin/freeipa-backupfiles.sh
+ADD scripts/backupfiles.sh /usr/sbin/backupfiles.sh
 ADD scripts/zeppelin-start /usr/sbin/zeppelin-start
 ADD scripts/default-notebooks/ ${ZEPPELIN_HOME}/default-notebooks/
-RUN chmod -v +x /usr/sbin/zeppelin-stop /usr/sbin/freeipa-backupfiles.sh /usr/sbin/zeppelin-start
+RUN chmod -v +x /usr/sbin/zeppelin-stop /usr/sbin/backupfiles.sh /usr/sbin/zeppelin-start
 
 WORKDIR ${ZEPPELIN_HOME}
 
-RUN mkdir -p /etc/security/freeipa-backups && \
-        chmod 777 /etc/security/freeipa-backups
+RUN mkdir -p /etc/security/backups && \
+        chmod 777 /etc/security/backups
 
 CMD ["/usr/sbin/zeppelin-start"]
