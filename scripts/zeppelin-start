@@ -20,7 +20,7 @@ fi
 function stop_running () {
     echo "[$0] SIGTERM received. Gracefully stopping."
     
-    /usr/sbin/freeipa-backupfiles.sh backup
+    /usr/sbin/backupfiles.sh backup
     /usr/sbin/zeppelin-stop
 	
 }
@@ -38,7 +38,7 @@ function run_zeppelin {
 	${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh restart; sleep 1	
 }
 
-/usr/sbin/freeipa-backupfiles.sh restore
+/usr/sbin/backupfiles.sh restore
 
 if [ -f /etc/ipa/ca.crt ] ; then
 	# Lo sto riavviando: tutto è dove dovrebbe stare	
@@ -88,7 +88,7 @@ else
 			fi
 		else
 			echo "Host $HOSTNAME_FQDN does not exist on IPA server"
-			/usr/sbin/manage-freeipa-backupfiles.sh delete
+			/usr/sbin/backupfiles.sh delete
 			ipa-client-install --uninstall
 			restore=true	# Forza l'installazione da zero del client: l'host non c'è sull'IPA server
 		fi
@@ -153,7 +153,7 @@ else
 
         cp -rvn $ZEPPELIN_HOME/default-notebooks/* $ZEPPELIN_HOME/notebook/
 
-	/usr/sbin/freeipa-backupfiles.sh backup
+	/usr/sbin/backupfiles.sh backup
 fi
 
 run_zeppelin
