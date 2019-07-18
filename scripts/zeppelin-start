@@ -35,7 +35,7 @@ function set_proxy {
 
 function run_zeppelin {	
         #${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh start; sleep 1; tail -F ${ZEPPELIN_HOME}/logs/zeppelin-*.log
-	${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh start; sleep 1	
+	${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh restart; sleep 1	
 }
 
 /usr/sbin/freeipa-backupfiles.sh restore
@@ -111,7 +111,7 @@ else
 		echo "First ipa-client installation for host $HOSTNAME_FQDN"
 		# FreeIPA Client Installation
 		REALM=$(echo $IPASERVERDOMAIN | tr '[:lower:]' '[:upper:]')
-		/usr/sbin/ipa-client-install $IPA_CLIENT_INSTALL_OPTS --force --no-nisdomain -p admin -w "$FREEIPA_ADMIN_PASSWORD" -U -v  --mkhomedir --realm=$REALM --domain=$IPASERVERDOMAIN --server=$IPASERVER  --enable-dns-updates < /dev/null
+		/usr/sbin/ipa-client-install $IPA_CLIENT_INSTALL_OPTS --force --force-join --no-nisdomain -p admin -w "$FREEIPA_ADMIN_PASSWORD" -U -v  --mkhomedir --realm=$REALM --domain=$IPASERVERDOMAIN --server=$IPASERVER  --enable-dns-updates < /dev/null
 		cp -f /etc/hostname /etc/hostname.ipa-client
 		echo "FreeIPA-enrolled."
 	fi
